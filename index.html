@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Styler - Unicode</title>
+  <title>Text Styler Unicode</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Text Styler Unicode</h1>
-  
+
   <textarea id="inputText" placeholder="Scrivi qui il tuo testo..."></textarea>
-  
-  <div>
+
+  <div class="buttons">
     <button onclick="applyStyle('boldSans')">𝗕𝗼𝗹𝗱 𝗦𝗮𝗻𝘀</button>
-    <button onclick="applyStyle('italic')">𝘊𝘰𝘳𝘴𝘪𝘷𝘰</button>
+    <button onclick="applyStyle('italic')">𝘐𝘵𝘢𝘭𝘪𝘤</button>
     <button onclick="applyStyle('monospace')">𝙈𝙤𝙣𝙤𝙨𝙥𝙖𝙘𝙚</button>
-    <button onclick="applyStyle('fraktur')">𝔊𝔬𝔱𝔦𝔠𝔬</button>
+    <button onclick="applyStyle('fraktur')">𝔉𝔯𝔞𝔨𝔱𝔲𝔯</button>
   </div>
-  
-  <div class="output" id="outputText"></div>
-  
+
+  <div id="outputText" class="output"></div>
+
   <button onclick="copyText()">📋 Copia</button>
 
   <script src="script.js"></script>
