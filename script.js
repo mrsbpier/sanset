@@ -1,35 +1,34 @@
 const styles = {
-  bold: { offset: 0x1D400 },
-  italic: { offset: 0x1D434 },
-  boldItalic: { offset: 0x1D468 },
-  monospace: { offset: 0x1D670 },
-  fraktur: { offset: 0x1D504 }
+  bold: { offsetUpper: 0x1D400, offsetLower: 0x1D41A, offsetDigits: 0x1D7CE },
+  italic: { offsetUpper: 0x1D434, offsetLower: 0x1D44E },
+  monospace: { offsetUpper: 0x1D670, offsetLower: 0x1D68A, offsetDigits: 0x1D7F6 }
 };
 
-function transformText(styleName) {
-  const text = document.getElementById('inputText').value;
-  const output = [...text].map(char => mapChar(char, styleName)).join('');
+function styleText(styleName) {
+  const input = document.getElementById('inputText').value;
+  const style = styles[styleName];
+  let output = '';
+
+  for (let char of input) {
+    const code = char.codePointAt(0);
+
+    if (code >= 65 && code <= 90 && style.offsetUpper) {
+      output += String.fromCodePoint(style.offsetUpper + (code - 65));
+    } else if (code >= 97 && code <= 122 && style.offsetLower) {
+      output += String.fromCodePoint(style.offsetLower + (code - 97));
+    } else if (code >= 48 && code <= 57 && style.offsetDigits) {
+      output += String.fromCodePoint(style.offsetDigits + (code - 48));
+    } else {
+      output += char;
+    }
+  }
+
   document.getElementById('outputText').innerText = output;
 }
 
-function mapChar(char, styleName) {
-  const code = char.codePointAt(0);
-  const style = styles[styleName];
-
-  // Uppercase A-Z
-  if (code >= 65 && code <= 90) return String.fromCodePoint(style.offset + (code - 65));
-  // Lowercase a-z
-  if (code >= 97 && code <= 122) return String.fromCodePoint(style.offset + (code - 97) + 26);
-  // Digits 0-9 (only monospace and bold have these)
-  if (code >= 48 && code <= 57 && styleName === 'monospace') return String.fromCodePoint(0x1D7F6 + (code - 48));
-  if (code >= 48 && code <= 57 && styleName === 'bold') return String.fromCodePoint(0x1D7CE + (code - 48));
-  
-  return char;
-}
-
-function copyResult() {
+function copyText() {
   const text = document.getElementById('outputText').innerText;
   if (text) {
-    navigator.clipboard.writeText(text).then(() => alert('Testo copiato!'));
+    navigator.clipboard.writeText(text).then(() => alert('Copiato!'));
   }
 }
