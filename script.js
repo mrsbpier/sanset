@@ -1,36 +1,35 @@
 const styles = {
-  boldSans: {
-    normal: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    styled: '𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘶𝘃𝘄𝘅𝘺𝘇𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟕𝟴𝟵'
-  },
-  italic: {
-    normal: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-    styled: '𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻'
-  },
-  monospace: {
-    normal: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    styled: '𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿'
-  },
-  fraktur: {
-    normal: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-    styled: '𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷'
-  }
+  bold: { offset: 0x1D400 },
+  italic: { offset: 0x1D434 },
+  boldItalic: { offset: 0x1D468 },
+  monospace: { offset: 0x1D670 },
+  fraktur: { offset: 0x1D504 }
 };
 
-function applyStyle(styleName) {
-  const input = document.getElementById('inputText').value;
-  const { normal, styled } = styles[styleName];
-
-  const result = [...input].map(char => {
-    const index = normal.indexOf(char);
-    return index !== -1 ? styled[index] : char;
-  }).join('');
-
-  document.getElementById('outputText').innerText = result;
+function transformText(styleName) {
+  const text = document.getElementById('inputText').value;
+  const output = [...text].map(char => mapChar(char, styleName)).join('');
+  document.getElementById('outputText').innerText = output;
 }
 
-function copyText() {
+function mapChar(char, styleName) {
+  const code = char.codePointAt(0);
+  const style = styles[styleName];
+
+  // Uppercase A-Z
+  if (code >= 65 && code <= 90) return String.fromCodePoint(style.offset + (code - 65));
+  // Lowercase a-z
+  if (code >= 97 && code <= 122) return String.fromCodePoint(style.offset + (code - 97) + 26);
+  // Digits 0-9 (only monospace and bold have these)
+  if (code >= 48 && code <= 57 && styleName === 'monospace') return String.fromCodePoint(0x1D7F6 + (code - 48));
+  if (code >= 48 && code <= 57 && styleName === 'bold') return String.fromCodePoint(0x1D7CE + (code - 48));
+  
+  return char;
+}
+
+function copyResult() {
   const text = document.getElementById('outputText').innerText;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => alert('Testo copiato!'));
+  if (text) {
+    navigator.clipboard.writeText(text).then(() => alert('Testo copiato!'));
+  }
 }
