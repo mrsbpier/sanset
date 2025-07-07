@@ -8,98 +8,20 @@
 </head>
 <body>
   <h1>Text Styler Unicode</h1>
+  
   <textarea id="inputText" placeholder="Scrivi qui il tuo testo..."></textarea>
+  
   <div>
     <button onclick="applyStyle('boldSans')">𝗕𝗼𝗹𝗱 𝗦𝗮𝗻𝘀</button>
     <button onclick="applyStyle('italic')">𝘊𝘰𝘳𝘴𝘪𝘷𝘰</button>
     <button onclick="applyStyle('monospace')">𝙈𝙤𝙣𝙤𝙨𝙥𝙖𝙘𝙚</button>
     <button onclick="applyStyle('fraktur')">𝔊𝔬𝔱𝔦𝔠𝔬</button>
   </div>
+  
   <div class="output" id="outputText"></div>
+  
   <button onclick="copyText()">📋 Copia</button>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-/* style.css */
-
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 2rem;
-  background-color: #f9fafb;
-}
-
-textarea {
-  width: 80%;
-  height: 100px;
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin-top: 1rem;
-  font-size: 1rem;
-}
-
-button {
-  margin: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
-  background-color: #6366f1;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-button:hover {
-  background-color: #4f46e5;
-}
-
-.output {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  font-size: 1.5rem;
-  word-wrap: break-word;
-}
-
-/* script.js */
-
-const styles = {
-  boldSans: {
-    normal: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-    styled: "𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘶𝘷𝘄𝘅𝘺𝘇𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟯𝟴𝟵"
-  },
-  italic: {
-    normal: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-    styled: "𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻"
-  },
-  monospace: {
-    normal: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-    styled: "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿"
-  },
-  fraktur: {
-    normal: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-    styled: "𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷"
-  }
-};
-
-function applyStyle(styleName) {
-  const text = document.getElementById('inputText').value;
-  const { normal, styled } = styles[styleName];
-  const transformed = [...text].map(c => {
-    const index = normal.indexOf(c);
-    return index !== -1 ? styled[index] : c;
-  }).join('');
-  document.getElementById('outputText').innerText = transformed;
-}
-
-function copyText() {
-  const text = document.getElementById('outputText').innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("Testo copiato!");
-  });
-}
